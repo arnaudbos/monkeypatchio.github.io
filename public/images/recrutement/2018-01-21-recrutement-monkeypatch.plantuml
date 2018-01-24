@@ -1,0 +1,57 @@
+@startuml
+
+(*) --> if "MonkeyPatchable?" then
+
+  -right->[YES] "Contact téléphonique"
+
+  -right-> if "Match?" then
+    -right-> [YES] "Entretien contact" as e1
+  else
+    -left-> [NO] (*)
+  endif
+
+else
+
+  -left->[NO] "No Go"
+
+  if "Candidature?" then
+    --> [YES] "Refus téléphonique" as niet
+    --> (*)
+  else
+    --> [NO] (*)
+  endif
+
+endif
+
+e1 -right-> if "" then
+  -right->[OK] "Test technique"
+  --> "Peer review"
+  --> "Entretien technique" as e2
+else
+  -->[NOK] "No Go" as nogo
+  --> niet
+endif
+
+e2 --> if "" then
+  -->[OK] if "Derniers doutes?" then
+    -->[YES] "Entretien complémentaire" as e2bis
+  else
+    -->[NO] "Entretien d'embauche" as e3
+  endif
+else
+  -->[NOK] nogo
+endif
+
+e2bis --> if "" then
+  -->[OK] e3
+else
+  -->[NOK] nogo
+endif
+
+e3 --> if "Offre acceptée?" then
+  -->[YES] "Monkey!"
+else
+  -->[NO] (*)
+endif
+
+@enduml
